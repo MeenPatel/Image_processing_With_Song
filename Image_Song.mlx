@@ -1,5 +1,3 @@
-# Auto detect text files and perform LF normalization
-* text=auto
 clc;
 clear all;
 [audioIn,f0] = audioread("C:\Users\Meen Patel\Downloads\Thunder Sound Effects Loud and Scary.mp3");
