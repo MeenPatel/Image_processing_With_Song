@@ -1,0 +1,91 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+clc;
+clear all;
+[audioIn,f0] = audioread("C:\Users\Meen Patel\Downloads\Thunder Sound Effects Loud and Scary.mp3");
+gong = audioplayer(audioIn,f0);
+t = (0:length(audioIn)-1)/f0;
+l1=audioIn(1:323184,1);
+l2=audioIn(1:323184,2);
+
+MEENori=imread('C:\Users\Meen Patel\Downloads\WhatsApp Image 2022-01-23 at 7.2.jpg');
+meen=rgb2gray(MEENori);
+
+
+lo=l1+l2;
+y1 =bandpass(lo,[60 250],f0);
+
+%n=1:15804912;
+%plot(n,abs(fft(lo))-abs(fft(y1)));
+p=y1;
+photos   = cell(161,1);
+
+MEENori=MEENori/6;
+b=meen/6;
+for i=1:1280
+    for j=465:930
+b(i,j,:)=b(i,j,:)*5;
+    end
+end
+dli=b;
+
+pol=abs(p);
+l=0;
+tic;
+for i=1:2000:323184
+    k=0;
+    if pol(i,1)<0.05
+        k=10;
+        %dli=MEENori;
+        %dli(:,:,1)=0;
+        %dli(:,:,2)=255;
+        %pol(i,1)=0;
+    end
+    if k==10
+        I=dli;
+   
+    else
+        I=MEENori;
+    end
+    l=l+1;
+    photos{(l)} = I;
+end
+toc;
+
+videofile = VideoWriter('outputlight.mp4','MPEG-4');
+videofile.FrameRate = 24;
+secperImg = ones(162,1);
+
+
+% open the videofile
+open(videofile);
+% write the frames to the video
+for i=1:length(photos)
+% convert the image to a frame
+frame = im2frame(photos{i,1});
+for v=1:secperImg(i)
+writeVideo(videofile, frame);
+end
+end
+i
+% close the videofile
+close(videofile);
+
+videoFWriter = vision.VideoFileWriter('myFile.avi','FrameRate',24);
+videoFReader = vision.VideoFileReader('C:\Users\Meen Patel\Desktop\matlab\output.mp4');
+for i=1:7903
+videoFrame = step(videoFReader);
+step(videoFWriter,videoFrame,audioIn);
+end
+
+release(videoFReader);
+release(videoFWriter);
+
+to be modified end
+
+gong2 = audioplayer(pol,f0);
+l=2
+%filename = 'handel1.wav';
+%audiowrite(filename,pol,f0);
+
+play(gong2);
